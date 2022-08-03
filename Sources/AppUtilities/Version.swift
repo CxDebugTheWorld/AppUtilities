@@ -9,13 +9,20 @@ import Foundation
 
 public struct VersionTriple: Codable, Hashable {
     /// The major version number.
-    let major: Int
+    public let major: Int
     
     /// The minor version number.
-    let minor: Int
+    public let minor: Int
     
     /// The patch version number.
-    let patch: Int
+    public let patch: Int
+    
+    /// Memberwise initializer.
+    public init(major: Int, minor: Int, patch: Int) {
+        self.major = major
+        self.minor = minor
+        self.patch = patch
+    }
 }
 
 extension VersionTriple: CustomStringConvertible {
