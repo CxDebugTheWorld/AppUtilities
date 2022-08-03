@@ -170,7 +170,8 @@ extension Logger {
                 ------------------------------
             """
             
-            Analytics.event(.criticalError(message: message))
+            // FIXME: Shared analytics
+//            Analytics.event(.criticalError(message: message))
         }
     }
 }
