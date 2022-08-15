@@ -1,14 +1,8 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonas Zell on 03.08.22.
-//
 
 import UIKit
 import SwiftUI
 
-enum DeviceModel: String, CaseIterable {
+public enum DeviceModel: String, CaseIterable {
     case iPodTouch5 = "iPod touch (5th generation)",
          iPodTouch6 = "iPod touch (6th generation)",
          iPodTouch7 = "iPod touch (7th generation)"
@@ -49,13 +43,12 @@ enum DeviceModel: String, CaseIterable {
     case other = "Other"
 }
 
-enum ScreenType: String, RawRepresentable, CaseIterable {
+public enum ScreenType: String, RawRepresentable, CaseIterable {
     case iPhone4 = "iPhone 4"
     case iPhone5 = "iPhone 5"
     case iPhone6 = "iPhone 6"
     case iPhone6Plus = "iPhone 6 Plus"
-    // The iPhone 8 Plus has a different logical size than the 6 Plus
-    case iPhone8Plus = "iPhone 8 Plus"
+    case iPhone8Plus = "iPhone 8 Plus" // The 8 Plus has a different logical size than the 6 Plus
     case iPhoneX = "iPhone X"
     case iPhoneXSMax = "iPhone XS Max"
     case iPhoneXR = "iPhone XR"
@@ -77,7 +70,7 @@ enum ScreenType: String, RawRepresentable, CaseIterable {
     }
 }
 
-extension UIDevice {
+public extension UIDevice {
     static var uuidString: String? {
         current.identifierForVendor?.uuidString
     }
@@ -166,7 +159,7 @@ extension UIDevice {
     static let screenType = model.screenType
 }
 
-extension DeviceModel {
+public extension DeviceModel {
     /// Whether or not this device has a home button.
     var hasHomeButton: Bool {
         switch self {
@@ -449,52 +442,13 @@ extension DeviceModel {
         }
     }
     
-    /// The lowest timer resolution that will not lead to laggy animations.
-    var minTimerResolution: Double {
-        switch self {
-        case .iPodTouch5:
-            fallthrough
-        case .iPodTouch6:
-            fallthrough
-        case .iPodTouch7:
-            fallthrough
-        case .iPhone4:
-            fallthrough
-        case .iPhone4s:
-            fallthrough
-        case .iPhone5:
-            fallthrough
-        case .iPhone5s:
-            fallthrough
-        case .iPhone5c:
-            fallthrough
-        case .iPhone6:
-            fallthrough
-        case .iPhone6Plus:
-            fallthrough
-        case .iPhone6s:
-            fallthrough
-        case .iPhone6sPlus:
-            fallthrough
-        case .iPhoneSE:
-            return 0.10
-        default:
-            return 0.10
-        }
-    }
-    
-    /// The timer tolerance that leads to acceptable performance.
-    var timerTolerance: Double {
-        return 0.1
-    }
-    
     /// The approximate corner radius of the device's screen.
     var screenCornerRadius: CGFloat {
         self.screenType.cornerRadius
     }
 }
 
-extension ScreenType {
+public extension ScreenType {
     /// The approximate corner radius of the device's screen.
     var cornerRadius: CGFloat {
         // https://kylebashour.com/posts/finding-the-real-iphone-x-corner-radius
@@ -599,7 +553,7 @@ extension ScreenType {
 }
 
 /// Scale a value relative to the screen height, using the iPhone mini 5.4" screen as a base.
-func scaleByScreenHeight(_ value: Double) -> Double {
+public func scaleByScreenHeight(_ value: Double) -> Double {
     guard let baselineHeight = ScreenType.iPhone12mini.logicalSize?.height else {
         return value
     }
@@ -608,7 +562,7 @@ func scaleByScreenHeight(_ value: Double) -> Double {
 }
 
 /// Scale a value relative to the screen height, using the iPhone mini 5.4" screen as a base.
-func scaleByScreenWidth(_ value: Double) -> Double {
+public func scaleByScreenWidth(_ value: Double) -> Double {
     guard let baselineWidth = ScreenType.iPhone12mini.logicalSize?.width else {
         return value
     }
