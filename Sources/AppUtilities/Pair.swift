@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonas Zell on 03.08.22.
-//
 
 public struct Pair<T, U> {
     let item1: T
