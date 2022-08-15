@@ -1,12 +1,8 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonas Zell on 03.08.22.
-//
 
 import SwiftUI
 
+/// An animation sequence allows the execution of several animation steps (and other functions) one after the other with
+/// specifiable timing.
 public class AnimationSequence {
     enum AnimationSequenceAction {
         /// An animation.
