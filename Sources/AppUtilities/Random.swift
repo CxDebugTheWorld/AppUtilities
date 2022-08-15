@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonas Zell on 03.08.22.
-//
 
 // From Swift.Tensorflow
 public struct ARC4RandomNumberGenerator: RandomNumberGenerator, Codable {
