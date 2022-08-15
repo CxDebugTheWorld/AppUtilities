@@ -1,11 +1,5 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonas Zell on 03.08.22.
-//
 
-enum Either<FirstOption, SecondOption> {
+public enum Either<FirstOption, SecondOption> {
     /// A value of the first type.
     case first(_ value: FirstOption)
     
@@ -14,7 +8,7 @@ enum Either<FirstOption, SecondOption> {
 }
 
 extension Either: Equatable where FirstOption: Equatable, SecondOption: Equatable {
-    static func ==(lhs: Self, rhs: Self) -> Bool {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
         switch lhs {
         case .first(let lhsValue):
             switch rhs {
@@ -35,7 +29,7 @@ extension Either: Equatable where FirstOption: Equatable, SecondOption: Equatabl
 }
 
 extension Either: Hashable where FirstOption: Hashable, SecondOption: Hashable {
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         switch self {
         case .first(let value):
             hasher.combine(value)
@@ -50,7 +44,7 @@ fileprivate enum EitherCodingKeys: CodingKey {
 }
 
 extension Either: Codable where FirstOption: Codable, SecondOption: Codable {
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: EitherCodingKeys.self)
         switch self {
         case .first(let value):
@@ -60,7 +54,7 @@ extension Either: Codable where FirstOption: Codable, SecondOption: Codable {
         }
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: EitherCodingKeys.self)
         switch container.allKeys.first {
         case .first:
