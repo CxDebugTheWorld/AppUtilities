@@ -4,7 +4,7 @@ import SwiftUI
 public struct Parallelogram: Shape {
     var edgeOffset: CGFloat
     
-    var animatableData: CGFloat {
+    public var animatableData: CGFloat {
         get { return edgeOffset }
         set { edgeOffset = newValue }
     }
@@ -18,7 +18,7 @@ public struct Parallelogram: Shape {
         ]
     }
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         let points = self.points
         

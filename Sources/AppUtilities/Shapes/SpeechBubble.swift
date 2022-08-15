@@ -12,7 +12,7 @@ public struct SpeechBubble: Shape {
     /// The size of the arrow.
     let arrowSize: CGPoint
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         
         let arrowHalfWidth = arrowSize.x * 0.5

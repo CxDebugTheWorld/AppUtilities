@@ -5,13 +5,12 @@ public struct RegularPolygon: Shape {
     /// The number of sides of this polygon.
     let sideCount: Int
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         let radius = min(rect.height, rect.width) * 0.5
         let center = rect.center
         
         var path = Path()
         guard sideCount >= 3 else {
-            Log.general.critical("attempting to draw regular polygon with \(sideCount) sides", submitAnalytics: true)
             path.addArc(center: center, radius: radius, startAngle: .zero, endAngle: .degrees(360), clockwise: true)
             
             return path

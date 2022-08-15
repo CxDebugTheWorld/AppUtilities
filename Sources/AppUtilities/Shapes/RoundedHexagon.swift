@@ -4,12 +4,12 @@ import SwiftUI
 public struct RoundedHexagon: Shape {
     var cornerAdjustment: CGFloat
     
-    var animatableData: CGFloat {
+    public var animatableData: CGFloat {
         get { return cornerAdjustment }
         set { cornerAdjustment = newValue }
     }
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         var width: CGFloat = min(rect.width, rect.height)
         let height = width

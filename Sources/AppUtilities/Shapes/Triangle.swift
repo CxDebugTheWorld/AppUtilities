@@ -16,7 +16,7 @@ public struct Triangle: Shape {
     /// The border mode.
     var borderMode: BorderMode = .All
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         var points: [CGPoint] = []
         

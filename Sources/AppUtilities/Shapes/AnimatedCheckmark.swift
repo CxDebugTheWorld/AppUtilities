@@ -5,7 +5,7 @@ public struct AnimatableCheckmark: Shape {
     /// The animation progress.
     var progress: CGFloat
     
-    var animatableData: CGFloat {
+    public var animatableData: CGFloat {
         get { progress }
         set { progress = newValue }
     }
@@ -19,7 +19,7 @@ public struct AnimatableCheckmark: Shape {
     /// The third point in the checkmark.
     static let point3: CGPoint = CGPoint(x: 1,   y: 0.1)
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         
         let p1 = Self.point1.projectUnitPoint(onto: rect)
@@ -60,7 +60,7 @@ public struct AnimatableXMark: Shape {
     /// The animation progress.
     var progress: CGFloat
     
-    var animatableData: CGFloat {
+    public var animatableData: CGFloat {
         get { progress }
         set { progress = newValue }
     }
@@ -77,7 +77,7 @@ public struct AnimatableXMark: Shape {
     /// The fourth point in the xmark.
     static let point4: CGPoint = CGPoint(x: 1,   y: 0)
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         
         let p1 = Self.point1.projectUnitPoint(onto: rect)
@@ -121,12 +121,12 @@ public struct AnimatableCircle: Shape {
     /// The animation progress.
     var progress: CGFloat
     
-    var animatableData: CGFloat {
+    public var animatableData: CGFloat {
         get { progress }
         set { progress = newValue }
     }
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         path.addArc(center: rect.center, radius: rect.height*0.5,
                     startAngle: .init(degrees: -90),

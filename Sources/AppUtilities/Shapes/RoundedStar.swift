@@ -4,12 +4,12 @@ import SwiftUI
 public struct RoundedStar: Shape {
     var cornerRadius: CGFloat
     
-    var animatableData: CGFloat {
+    public var animatableData: CGFloat {
         get { return cornerRadius }
         set { cornerRadius = newValue }
     }
     
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         let center = CGPoint(x: rect.width / 2, y: rect.height / 2)
         let r = rect.width / 2
