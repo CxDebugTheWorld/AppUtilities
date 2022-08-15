@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonas Zell on 03.08.22.
-//
 
 import Foundation
 import os
@@ -169,9 +163,6 @@ extension Logger {
                 \(Thread.callStackSymbols.joined(separator: "\n"))
                 ------------------------------
             """
-            
-            // FIXME: Shared analytics
-//            Analytics.event(.criticalError(message: message))
         }
     }
 }
