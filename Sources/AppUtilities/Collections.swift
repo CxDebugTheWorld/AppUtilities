@@ -1,19 +1,12 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonas Zell on 03.08.22.
-//
 
 import Foundation
-
-// MARK: String extensions
 
 // https://stackoverflow.com/questions/2590677/how-do-i-combine-hash-values-in-c0x
 public func combineHashes(_ lhs: inout Int, _ rhs: Int) {
     lhs ^= rhs &+ 0x9e3779b9 &+ (lhs &<< 6) &+ (lhs &>> 2)
 }
 
+/// Protocol for values that provide a hash value that is consistent across app launches.
 public protocol StableHashable: Hashable {
     /// The stable hash value, i.e. one that is the same across launches.
     var stableHash: Int { get }
@@ -110,12 +103,12 @@ public extension String {
     }
 }
 
-func randomString(length: Int) -> String {
+public func randomString(length: Int) -> String {
     let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     return String((0..<length).map{ _ in letters.randomElement()! })
 }
 
-func randomString(length: Int, using rng: inout ARC4RandomNumberGenerator) -> String {
+public func randomString(length: Int, using rng: inout ARC4RandomNumberGenerator) -> String {
     let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     return String((0..<length).map{ _ in letters.randomElement(using: &rng)! })
 }
@@ -166,8 +159,9 @@ public extension Array {
     }
 }
 
-extension Array where Element: Equatable {
-    public var unique: [Element] {
+public extension Array where Element: Equatable {
+    /// Return an array containing only the unique elements of this array. Uniqueness is determined using equality.
+    var unique: [Element] {
         var newArray = [Element]()
         for el in self {
             if newArray.firstIndex(of: el) != nil {
@@ -182,6 +176,8 @@ extension Array where Element: Equatable {
 }
 
 public extension Array {
+    /// Return an array containing only the unique elements of this array. Uniqueness
+    /// is determined by a custom function parameter.
     func unique<T: Hashable>(by getUniqueProperty: (Element) -> T) -> [Element] {
         var newArray = [Element]()
         var set = Set<T>()
