@@ -1,5 +1,6 @@
 
 import Foundation
+import SwiftUI
 
 public func clamp<T : Comparable>(_ value: T, lower: T, upper: T) -> T {
     return max(lower, min(value, upper))
@@ -99,11 +100,11 @@ public extension SignedInteger {
 precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
 infix operator ** : PowerPrecedence
 
-func ** (radix: Int, power: Int) -> Int {
+public func ** (radix: Int, power: Int) -> Int {
     return Int(pow(Double(radix), Double(power)))
 }
 
-func ** (radix: Decimal, power: Int) -> Decimal {
+public func ** (radix: Decimal, power: Int) -> Decimal {
     if power == 0 {
         return 1
     }
@@ -118,4 +119,10 @@ func ** (radix: Decimal, power: Int) -> Decimal {
     }
     
     return result
+}
+
+/// - returns: A point on a circle of radius `radius` rotating `angle` degrees clockwise around the edge.
+public func pointOnCircle(radius: CGFloat, angle: Angle) -> CGPoint {
+    // https://math.stackexchange.com/a/260115
+    CGPoint(x: radius * Darwin.sin(angle.radians), y: radius * Darwin.cos(angle.radians))
 }
