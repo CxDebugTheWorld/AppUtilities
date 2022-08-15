@@ -1,13 +1,7 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonas Zell on 03.08.22.
-//
 
 import SwiftUI
 
-struct Format {
+public struct Format {
     /// The common formatter to use.
     static let formatter: NumberFormatter = NumberFormatter()
     
