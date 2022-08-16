@@ -40,7 +40,7 @@ public struct AUIconView: View {
     /// The size of the icon.
     let size: CGSize
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             switch icon {
             case .System(let systemName, let rotation, let scale):
