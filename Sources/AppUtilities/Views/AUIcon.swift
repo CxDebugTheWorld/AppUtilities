@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-enum AUIcon {
+public enum AUIcon {
     /// A system icon.
     case System(systemName: String, rotation: Angle = .zero, scale: CGFloat = 1)
     
@@ -18,7 +18,7 @@ enum AUIcon {
     case Placeholder
 }
 
-extension AUIcon {
+public extension AUIcon {
     /// Create a view for this icon.
     func createView(color: Color, size: CGFloat) -> some View {
         AUIconView(icon: self, color: color, size: .init(width: size, height: size))
@@ -30,7 +30,7 @@ extension AUIcon {
     }
 }
 
-struct AUIconView: View {
+public struct AUIconView: View {
     /// The icon this view is for.
     let icon: AUIcon
     
@@ -87,7 +87,7 @@ extension AUIcon: Codable {
         case systemImage, image, text, placeholder, loadedImage
     }
     
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .System(let systemName, let rotation, let scale):
@@ -103,7 +103,7 @@ extension AUIcon: Codable {
         }
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         switch container.allKeys.first {
         case .systemImage:
