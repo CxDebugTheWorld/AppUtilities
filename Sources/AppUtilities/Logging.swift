@@ -3,6 +3,10 @@ import Foundation
 import os
 import SwiftUI
 
+var reportCriticalError: (String) -> Void = {
+    fatalError($0)
+}
+
 public final class Log {
 }
 
