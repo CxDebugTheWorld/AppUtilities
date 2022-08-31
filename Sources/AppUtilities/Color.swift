@@ -125,3 +125,45 @@ extension Color: Codable {
         self = Color(UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(opacity)))
     }
 }
+
+public extension UIColor {
+    var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        return (red: red, green: green, blue: blue, alpha: alpha)
+    }
+}
+
+public extension UIColor {
+    static func random(alpha: UInt8 = 255) -> UIColor {
+        .init(red: UInt8.random(in: 0...255),
+              green: .random(in: 0...255),
+              blue: .random(in: 0...255),
+              alpha: alpha)
+    }
+}
+
+public extension UIColor {
+    convenience init(red: UInt8, green: UInt8, blue: UInt8, alpha: UInt8) {
+        self.init(
+            red: CGFloat(red)/255,
+            green: CGFloat(green)/255,
+            blue: CGFloat(blue)/255,
+            alpha: CGFloat(alpha)/255)
+    }
+}
+
+public extension UIColor {
+    // https://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
+    var contrastColor: UIColor {
+        let (r, g, b, _) = self.components
+        let luminance = (0.299 * r + 0.587 * g + 0.114 * b)
+        
+        return luminance > 0.5 ? .black : .white
+    }
+}
