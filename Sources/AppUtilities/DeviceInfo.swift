@@ -1,5 +1,8 @@
 
+#if canImport(UIKit)
 import UIKit
+#endif
+
 import SwiftUI
 
 public enum DeviceModel: String, CaseIterable {
@@ -70,6 +73,7 @@ public enum ScreenType: String, RawRepresentable, CaseIterable {
     }
 }
 
+#if canImport(UIKit)
 public extension UIDevice {
     static var uuidString: String? {
         current.identifierForVendor?.uuidString
@@ -158,6 +162,7 @@ public extension UIDevice {
     static let model: DeviceModel = deviceModel(for: deviceIdentifier)
     static let screenType = model.screenType
 }
+#endif
 
 public extension DeviceModel {
     /// Whether or not this device has a home button.
@@ -552,6 +557,8 @@ public extension ScreenType {
     }
 }
 
+#if canImport(UIKit)
+
 /// Scale a value relative to the screen height, using the iPhone mini 5.4" screen as a base.
 public func scaleByScreenHeight(_ value: Double) -> Double {
     guard let baselineHeight = ScreenType.iPhone12mini.logicalSize?.height else {
@@ -570,3 +577,4 @@ public func scaleByScreenWidth(_ value: Double) -> Double {
     return Double(UIScreen.main.bounds.width / baselineWidth) * value
 }
 
+#endif

@@ -75,6 +75,15 @@ public extension CGRect {
     }
 }
 
+extension CGRect: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.minX)
+        hasher.combine(self.minY)
+        hasher.combine(self.width)
+        hasher.combine(self.height)
+    }
+}
+
 extension CGPoint: VectorArithmetic {
     public mutating func scale(by rhs: Double) {
         x = x * CGFloat(rhs)
@@ -180,6 +189,13 @@ public extension CGSize {
     }
 }
 
+extension CGSize: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.width)
+        hasher.combine(self.height)
+    }
+}
+
 public extension CGPoint {
     // Scalar-vector multiplication
     static func * (left: CGFloat, right: CGPoint) -> CGPoint {
@@ -238,6 +254,13 @@ public extension CGPoint {
     // θ = acos(AB)
     func angle(to vector: CGPoint) -> CGFloat {
         return acos(self.normalized.dot(vector.normalized))
+    }
+}
+
+extension CGPoint: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.x)
+        hasher.combine(self.y)
     }
 }
 
