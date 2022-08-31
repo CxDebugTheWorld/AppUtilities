@@ -129,7 +129,7 @@ public func pointOnCircle(radius: CGFloat, angle: Angle) -> CGPoint {
 
 // MARK: Statistics
 
-func linearRegression(_ xs: [Double], _ ys: [Double]) -> (Double) -> Double {
+public func linearRegression(_ xs: [Double], _ ys: [Double]) -> (Double) -> Double {
     assert(xs.count != 0)
     assert(xs.count == ys.count)
     
