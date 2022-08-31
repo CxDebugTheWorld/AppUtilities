@@ -73,6 +73,43 @@ public extension CGRect {
         
         return .init(x: x, y: y)
     }
+    
+    /// Whether or not the given line intersects this rectangle.
+    func intersectsLine(start: CGPoint, end: CGPoint) -> CGPoint? {
+        var (pt, intersects) = getIntersectionPoint(topLeft, topRight, start, end)
+        if intersects {
+            return pt
+        }
+        
+        (pt, intersects) = getIntersectionPoint(topRight, bottomRight, start, end)
+        if intersects {
+            return pt
+        }
+        
+        (pt, intersects) = getIntersectionPoint(bottomRight, bottomLeft, start, end)
+        if intersects {
+            return pt
+        }
+        
+        (pt, intersects) = getIntersectionPoint(bottomLeft, topLeft, start, end)
+        if intersects {
+            return pt
+        }
+        
+        return nil
+    }
+    
+    /// The top left corner of this rectangle.
+    var topLeft: CGPoint { .init(x: minX, y: minY) }
+    
+    /// The top right corner of this rectangle.
+    var topRight: CGPoint { .init(x: maxX, y: minY) }
+    
+    /// The bottom left corner of this rectangle.
+    var bottomLeft: CGPoint { .init(x: minX, y: maxY) }
+    
+    /// The bottom right corner of this rectangle.
+    var bottomRight: CGPoint { .init(x: maxX, y: maxY) }
 }
 
 extension CGRect: Hashable {
