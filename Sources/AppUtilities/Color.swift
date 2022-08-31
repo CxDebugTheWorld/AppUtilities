@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-extension Color {
+public extension Color {
     var components: (red: Double, green: Double, blue: Double, opacity: Double) {
 #if canImport(UIKit)
         typealias NativeColor = UIColor
