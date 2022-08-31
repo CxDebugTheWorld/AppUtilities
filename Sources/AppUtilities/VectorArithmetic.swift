@@ -292,6 +292,11 @@ public extension CGPoint {
     func angle(to vector: CGPoint) -> CGFloat {
         return acos(self.normalized.dot(vector.normalized))
     }
+    
+    // Signed angle between two vectors
+    func signedAngle(to vector: CGPoint) -> CGFloat {
+        atan2(self.x * vector.y - self.y * vector.x, self.x * vector.x + self.y * vector.y)
+    }
 }
 
 extension CGPoint: Hashable {
