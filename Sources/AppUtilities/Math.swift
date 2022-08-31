@@ -126,3 +126,28 @@ public func pointOnCircle(radius: CGFloat, angle: Angle) -> CGPoint {
     // https://math.stackexchange.com/a/260115
     CGPoint(x: radius * Darwin.sin(angle.radians), y: radius * Darwin.cos(angle.radians))
 }
+
+// MARK: Statistics
+
+func linearRegression(_ xs: [Double], _ ys: [Double]) -> (Double) -> Double {
+    assert(xs.count != 0)
+    assert(xs.count == ys.count)
+    
+    let mean_xs = xs.mean!
+    let mean_ys = ys.mean!
+    
+    var product = [Double]()
+    for i in 0..<xs.count {
+        product.append(ys[i] * xs[i])
+    }
+    
+    let correlation = product.mean!
+    let autocorrelation = xs.map { $0*$0 }.mean!
+    
+    let sum1 = correlation - mean_xs * mean_ys
+    let sum2 = autocorrelation - pow(mean_xs, 2)
+    let slope = sum1 / sum2
+    let intercept = mean_ys - slope * mean_xs
+    
+    return { x in intercept + slope * x }
+}
