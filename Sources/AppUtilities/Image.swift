@@ -280,3 +280,50 @@ public extension UIView {
         }
     }
 }
+
+public extension UIScreen {
+    var orientation: UIInterfaceOrientation {
+        let point = coordinateSpace.convert(CGPoint.zero, to: fixedCoordinateSpace)
+        switch (point.x, point.y) {
+        case (0, 0):
+            return .portrait
+        case let (x, y) where x != 0 && y != 0:
+            return .portraitUpsideDown
+        case let (0, y) where y != 0:
+            return .landscapeLeft
+        case let (x, 0) where x != 0:
+            return .landscapeRight
+        default:
+            return .unknown
+        }
+    }
+}
+
+public extension UIImage {
+    /// Create a snapshot of this frame with the correct orientation.
+    static func rotateSnapshotImage(from rawPhoto: UIImage) -> UIImage? {
+        let rotationAngleDegrees: Float?
+        switch UIScreen.main.orientation {
+        case .portrait:
+            rotationAngleDegrees = 90
+        case .portraitUpsideDown:
+            rotationAngleDegrees = -90
+        case .landscapeLeft:
+            rotationAngleDegrees = 180
+        case .landscapeRight:
+            rotationAngleDegrees = nil
+        default:
+            rotationAngleDegrees = nil
+        }
+        
+        let finalPhoto: UIImage
+        if let rotationAngleDegrees = rotationAngleDegrees {
+            finalPhoto = rawPhoto.rotate(radians: rotationAngleDegrees * .deg2rad)!
+        }
+        else {
+            finalPhoto = rawPhoto
+        }
+        
+        return finalPhoto
+    }
+}

@@ -2,6 +2,14 @@
 import Foundation
 import SwiftUI
 
+extension BinaryFloatingPoint {
+    /// Utility constant to transform between radians and degrees.
+    static var rad2deg: Self { 180 / Self.pi }
+    
+    /// Utility constant to transform between degrees and radians.
+    static var deg2rad: Self { Self.pi / 180 }
+}
+
 public func clamp<T : Comparable>(_ value: T, lower: T, upper: T) -> T {
     return max(lower, min(value, upper))
 }
