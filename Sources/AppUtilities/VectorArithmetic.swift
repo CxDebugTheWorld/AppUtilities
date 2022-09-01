@@ -39,8 +39,14 @@ public struct AnimatableVector: VectorArithmetic {
 }
 
 public extension CGRect {
+    /// The center point of the rectangle.
     var center: CGPoint {
         CGPoint(x: origin.x + (size.width * 0.5), y: origin.y + (size.height * 0.5))
+    }
+    
+    /// The surface area of the rectangle.
+    var area: CGFloat {
+        width * height
     }
     
     /// A random point in this rectangle.
