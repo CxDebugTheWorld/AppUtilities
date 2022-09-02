@@ -414,7 +414,7 @@ public struct AnimatableTuple3<A: VectorArithmetic, B: VectorArithmetic, C: Vect
     }
 }
 
-public struct AnimatableTuple4<A: VectorArithmetic, B: VectorArithmetic, C: VectorArithmetic, D: VectorArithmetic>: Animatable {
+public struct AnimatableTuple4<A: VectorArithmetic, B: VectorArithmetic, C: VectorArithmetic, D: VectorArithmetic>: VectorArithmetic {
     public var first: A
     public var second: B
     public var third: C
