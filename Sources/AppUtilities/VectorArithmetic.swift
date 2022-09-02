@@ -366,7 +366,7 @@ public func circleLineIntersections(_ p: CGPoint, _ q: CGPoint, radius r: CGFloa
     )
 }
 
-public struct AnimatableTuple3<A: VectorArithmetic, B: VectorArithmetic, C: VectorArithmetic>: Animatable {
+public struct AnimatableTuple3<A: VectorArithmetic, B: VectorArithmetic, C: VectorArithmetic>: VectorArithmetic {
     public var first: A
     public var second: B
     public var third: C
@@ -377,15 +377,40 @@ public struct AnimatableTuple3<A: VectorArithmetic, B: VectorArithmetic, C: Vect
         self.third = third
     }
     
-    public var animatableData: AnimatablePair<AnimatablePair<A, B>, C> {
-        get {
-            .init(.init(first, second), third)
-        }
-        set {
-            self.first = newValue.first.first
-            self.second = newValue.first.second
-            self.third = newValue.second
-        }
+    public static var zero: Self { .init(.zero, .zero, .zero) }
+    
+    public static func + (lhs: Self, rhs: Self) -> Self {
+        var copy = lhs
+        copy += rhs
+        return copy
+    }
+    
+    public static func += (lhs: inout Self, rhs: Self) {
+        lhs.first += rhs.first
+        lhs.second += rhs.second
+        lhs.third += rhs.third
+    }
+    
+    public static func - (lhs: Self, rhs: Self) -> Self {
+        var copy = lhs
+        copy -= rhs
+        return copy
+    }
+    
+    public static func -= (lhs: inout Self, rhs: Self) {
+        lhs.first -= rhs.first
+        lhs.second -= rhs.second
+        lhs.third -= rhs.third
+    }
+    
+    public mutating func scale(by rhs: Double) {
+        first.scale(by: rhs)
+        second.scale(by: rhs)
+        third.scale(by: rhs)
+    }
+    
+    public var magnitudeSquared: Double {
+        first.magnitudeSquared + second.magnitudeSquared + third.magnitudeSquared
     }
 }
 
@@ -402,15 +427,42 @@ public struct AnimatableTuple4<A: VectorArithmetic, B: VectorArithmetic, C: Vect
         self.fourth = fourth
     }
     
-    public var animatableData: AnimatablePair<AnimatablePair<AnimatablePair<A, B>, C>, D> {
-        get {
-            .init(.init(.init(first, second), third), fourth)
-        }
-        set {
-            self.first = newValue.first.first.first
-            self.second = newValue.first.first.second
-            self.third = newValue.first.second
-            self.fourth = newValue.second
-        }
+    public static var zero: Self { .init(.zero, .zero, .zero, .zero) }
+    
+    public static func + (lhs: Self, rhs: Self) -> Self {
+        var copy = lhs
+        copy += rhs
+        return copy
+    }
+    
+    public static func += (lhs: inout Self, rhs: Self) {
+        lhs.first += rhs.first
+        lhs.second += rhs.second
+        lhs.third += rhs.third
+        lhs.fourth += rhs.fourth
+    }
+    
+    public static func - (lhs: Self, rhs: Self) -> Self {
+        var copy = lhs
+        copy -= rhs
+        return copy
+    }
+    
+    public static func -= (lhs: inout Self, rhs: Self) {
+        lhs.first -= rhs.first
+        lhs.second -= rhs.second
+        lhs.third -= rhs.third
+        lhs.fourth -= rhs.fourth
+    }
+    
+    public mutating func scale(by rhs: Double) {
+        first.scale(by: rhs)
+        second.scale(by: rhs)
+        third.scale(by: rhs)
+        fourth.scale(by: rhs)
+    }
+    
+    public var magnitudeSquared: Double {
+        first.magnitudeSquared + second.magnitudeSquared + third.magnitudeSquared + fourth.magnitudeSquared
     }
 }
