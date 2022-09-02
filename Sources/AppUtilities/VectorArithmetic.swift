@@ -367,9 +367,9 @@ public func circleLineIntersections(_ p: CGPoint, _ q: CGPoint, radius r: CGFloa
 }
 
 public struct AnimatableTuple3<A: VectorArithmetic, B: VectorArithmetic, C: VectorArithmetic>: Animatable {
-    var first: A
-    var second: B
-    var third: C
+    public var first: A
+    public var second: B
+    public var third: C
     
     init(_ first: A, _ second: B, _ third: C) {
         self.first = first
@@ -390,12 +390,12 @@ public struct AnimatableTuple3<A: VectorArithmetic, B: VectorArithmetic, C: Vect
 }
 
 public struct AnimatableTuple4<A: VectorArithmetic, B: VectorArithmetic, C: VectorArithmetic, D: VectorArithmetic>: Animatable {
-    var first: A
-    var second: B
-    var third: C
-    var fourth: D
+    public var first: A
+    public var second: B
+    public var third: C
+    public var fourth: D
     
-    init(_ first: A, _ second: B, _ third: C, _ fourth: D) {
+    public init(_ first: A, _ second: B, _ third: C, _ fourth: D) {
         self.first = first
         self.second = second
         self.third = third
