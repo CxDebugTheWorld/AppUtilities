@@ -105,6 +105,27 @@ public extension CGRect {
         return nil
     }
     
+    /// Scale the rect by the given dimensions.
+    func scaled(width: CGFloat, height: CGFloat) -> CGRect {
+        .init(x: minX * width, y: minY * height,
+              width: self.width * width, height: self.height * height)
+    }
+    
+    /// Scale the rect by the given dimensions.
+    func scaled(by size: CGSize) -> CGRect {
+        scaled(width: size.width, height: size.height)
+    }
+    
+    /// Scale the rect by the given dimensions.
+    mutating func scale(width: CGFloat, height: CGFloat) {
+        self = self.scaled(width: width, height: height)
+    }
+    
+    /// Scale the rect by the given dimensions.
+    mutating func scale(by size: CGSize) {
+        self = self.scaled(by: size)
+    }
+    
     /// The top left corner of this rectangle.
     var topLeft: CGPoint { .init(x: minX, y: minY) }
     
