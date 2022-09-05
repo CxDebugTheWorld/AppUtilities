@@ -116,6 +116,16 @@ public extension CGRect {
     
     /// The bottom right corner of this rectangle.
     var bottomRight: CGPoint { .init(x: maxX, y: maxY) }
+    
+    /// Expand a bounding box rectangle to contain the given point.
+    func expanded(toContain point: CGPoint) -> CGRect {
+        let minX = min(self.minX, point.x)
+        let minY = min(self.minY, point.y)
+        let maxX = max(self.maxX, point.x)
+        let maxY = max(self.maxY, point.y)
+        
+        return .init(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
+    }
 }
 
 extension CGRect: Hashable {
