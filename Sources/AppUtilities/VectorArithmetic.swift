@@ -126,6 +126,22 @@ public extension CGRect {
         self = self.scaled(by: size)
     }
     
+    /// Scale outwards from the center by the given amount.
+    func scaled(by value: CGFloat) -> CGRect {
+        let diagonal = topLeft - center
+        let newTopLeft = center + (diagonal * value)
+        let newBottomRight = center - (diagonal * value)
+        
+        return .init(x: newTopLeft.x, y: newTopLeft.y,
+                     width: newBottomRight.x - newTopLeft.x,
+                     height: newBottomRight.y - newTopLeft.y)
+    }
+    
+    /// Scale outwards from the center by the given amount.
+    mutating func scale(by value: CGFloat) {
+        self = self.scaled(by: value)
+    }
+    
     /// The top left corner of this rectangle.
     var topLeft: CGPoint { .init(x: minX, y: minY) }
     
