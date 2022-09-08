@@ -40,7 +40,11 @@ public enum DeviceModel: String, CaseIterable {
          iPhone13 = "iPhone 13",
          iPhone13Pro = "iPhone 13 Pro",
          iPhone13ProMax = "iPhone 13 Pro Max",
-         iPhoneSE3 = "iPhone SE (3rd generation)"
+         iPhoneSE3 = "iPhone SE (3rd generation)",
+         iPhone14 = "iPhone 14",
+         iPhone14Plus = "iPhone 14 Plus",
+         iPhone14Pro = "iPhone 14 Pro",
+         iPhone14ProMax = "iPhone 14 Pro Max"
     
     case simulator = "Simulator"
     case other = "Other"
@@ -154,6 +158,10 @@ public extension UIDevice {
         case "iPhone14,2":                              return .iPhone13Pro
         case "iPhone14,3":                              return .iPhone13ProMax
         case "iPhone14,6":                              return .iPhoneSE3
+        case "iPhone14,7":                              return .iPhone14
+        case "iPhone14,8":                              return .iPhone14Plus
+        case "iPhone15,2":                              return .iPhone14Pro
+        case "iPhone15,3":                              return .iPhone14ProMax
         case "i386", "x86_64", "arm64":                 return Self.simulatorDeviceModel()
         default:                                        return .other
         }
@@ -214,50 +222,38 @@ public extension DeviceModel {
     /// Whether or not this device supports haptics.
     var supportsHaptics: Bool {
         switch self {
-        case .iPhone7:
+        case .iPodTouch5:
             fallthrough
-        case .iPhone7Plus:
+        case .iPodTouch6:
             fallthrough
-        case .iPhone8:
+        case .iPodTouch7:
             fallthrough
-        case .iPhone8Plus:
+        case .iPhone4:
             fallthrough
-        case .iPhoneSE2:
+        case .iPhone4s:
             fallthrough
-        case .iPhoneSE3:
+        case .iPhone5:
             fallthrough
-        case .iPhoneX:
+        case .iPhone5c:
             fallthrough
-        case .iPhoneXS:
+        case .iPhone5s:
             fallthrough
-        case .iPhoneXSMax:
+        case .iPhone6:
             fallthrough
-        case .iPhoneXR:
+        case .iPhone6Plus:
             fallthrough
-        case .iPhone11:
+        case .iPhone6s:
             fallthrough
-        case .iPhone11Pro:
+        case .iPhone6sPlus:
             fallthrough
-        case .iPhone11ProMax:
+        case .iPhoneSE:
             fallthrough
-        case .iPhone12mini:
+        case .simulator:
             fallthrough
-        case .iPhone12:
-            fallthrough
-        case .iPhone12Pro:
-            fallthrough
-        case .iPhone12ProMax:
-            return true
-        case .iPhone13mini:
-            fallthrough
-        case .iPhone13:
-            fallthrough
-        case .iPhone13Pro:
-            fallthrough
-        case .iPhone13ProMax:
-            return true
-        default:
+        case .other:
             return false
+        default:
+            return true
         }
     }
     
@@ -435,10 +431,18 @@ public extension DeviceModel {
         case .iPhone13:
             fallthrough
         case .iPhone13Pro:
+            fallthrough
+        case .iPhone14:
+            fallthrough
+        case .iPhone14Pro:
             return .iPhone12
         case .iPhone12ProMax:
             fallthrough
         case .iPhone13ProMax:
+            fallthrough
+        case .iPhone14Plus:
+            fallthrough
+        case .iPhone14ProMax:
             return .iPhone12ProMax
         case .simulator:
             fallthrough
