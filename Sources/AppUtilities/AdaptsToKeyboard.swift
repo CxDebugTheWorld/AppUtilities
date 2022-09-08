@@ -1,4 +1,6 @@
 
+#if canImport(UIKit)
+
 import SwiftUI
 import Combine
 
@@ -39,3 +41,5 @@ extension View {
         return modifier(AdaptsToKeyboard())
     }
 }
+
+#endif

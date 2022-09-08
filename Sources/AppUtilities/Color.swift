@@ -1,21 +1,19 @@
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public extension Color {
     var components: (red: Double, green: Double, blue: Double, opacity: Double) {
-#if canImport(UIKit)
-        typealias NativeColor = UIColor
-#elseif canImport(AppKit)
-        typealias NativeColor = NSColor
-#endif
-        
         var r: CGFloat = 0
         var g: CGFloat = 0
         var b: CGFloat = 0
         var o: CGFloat = 0
         
+        #if canImport(UIKit)
         if #available(iOS 14.0, *) {
-            guard NativeColor(self).getRed(&r, green: &g, blue: &b, alpha: &o) else {
+            guard UIColor(self).getRed(&r, green: &g, blue: &b, alpha: &o) else {
                 return (0, 0, 0, 0)
             }
         } else {
@@ -25,6 +23,9 @@ public extension Color {
                 return (0, 0, 0, 0)
             }
         }
+        #elseif canImport(AppKit)
+        NSColor(self).getRed(&r, green: &g, blue: &b, alpha: &o)
+        #endif
         
         return (Double(r), Double(g), Double(b), Double(o))
     }
@@ -122,9 +123,11 @@ extension Color: Codable {
         let blue = try container.decode(Double.self)
         let opacity = try container.decode(Double.self)
         
-        self = Color(UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(opacity)))
+        self = Color(red: red, green: green, blue: blue, opacity: opacity)
     }
 }
+
+#if canImport(UIKit)
 
 public extension UIColor {
     var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
@@ -167,3 +170,5 @@ public extension UIColor {
         return luminance > 0.5 ? .black : .white
     }
 }
+
+#endif

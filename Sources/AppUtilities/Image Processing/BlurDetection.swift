@@ -109,6 +109,10 @@ public class BlurDetector: NSObject {
 
 public typealias BlurDetectionResult = Float
 
+#if canImport(UIKit)
+
+import UIKit
+
 // Extensions to simplify conversion between orientation enums.
 public extension UIImage.Orientation {
     init(_ cgOrientation: CGImagePropertyOrientation) {
@@ -132,3 +136,5 @@ public extension UIImage.Orientation {
         }
     }
 }
+
+#endif

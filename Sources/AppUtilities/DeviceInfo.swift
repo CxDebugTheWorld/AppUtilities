@@ -1,6 +1,8 @@
 
 #if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
 #endif
 
 import SwiftUI
@@ -359,7 +361,11 @@ public extension DeviceModel {
         case .iPhoneSE:
             return true
         case .simulator:
+            #if canImport(UIKit)
             return UIScreen.main.bounds.width.isEqual(to: 320)
+            #elseif canImport(AppKit)
+            return NSScreen.main?.frame.width.isEqual(to: 320) ?? false
+            #endif
         default:
             return false
         }

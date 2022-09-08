@@ -1,5 +1,10 @@
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
+
+#if canImport(UIKit)
 
 public struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
@@ -15,7 +20,11 @@ public extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
-    
+}
+
+#endif
+
+public extension View {
     func border<S>(_ content: S, width: CGFloat, radius: CGFloat) -> some View where S : ShapeStyle {
         return self.overlay(
             RoundedRectangle(cornerRadius: radius)

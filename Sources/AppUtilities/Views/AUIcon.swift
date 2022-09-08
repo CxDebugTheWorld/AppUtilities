@@ -1,5 +1,8 @@
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public enum AUIcon {
     /// A system icon.
@@ -7,9 +10,11 @@ public enum AUIcon {
     
     /// A custom image icon.
     case Image(name: String, rotation: Angle = .zero, scale: CGFloat = 1)
-    
+
+#if canImport(UIKit)
     /// A custom image icon.
     case LoadedImage(image: UIImage, rotation: Angle = .zero, scale: CGFloat = 1)
+#endif
     
     /// A text-based icon.
     case Text(text: String, rotation: Angle = .zero, scale: CGFloat = 1)
@@ -57,6 +62,7 @@ public struct AUIconView: View {
                     .colorMultiply(color)
                     .rotationEffect(rotation)
                     .scaleEffect(scale)
+            #if canImport(UIKit)
             case .LoadedImage(let image, let rotation, let scale):
                 Image(uiImage: image)
                     .resizable()
@@ -65,6 +71,7 @@ public struct AUIconView: View {
                     .colorMultiply(color)
                     .rotationEffect(rotation)
                     .scaleEffect(scale)
+            #endif
             case .Text(let text, let rotation, let scale):
                 Text(verbatim: text)
                     .font(.system(size: size.width))
@@ -94,8 +101,10 @@ extension AUIcon: Codable {
             try container.encodeValues(systemName, rotation.degrees, scale, for: .systemImage)
         case .Image(let name, let rotation, let scale):
             try container.encodeValues(name, rotation.degrees, scale, for: .image)
+        #if canImport(UIKit)
         case .LoadedImage(let image, let rotation, let scale):
             try container.encodeValues(image.pngData(), rotation.degrees, scale, for: .loadedImage)
+        #endif
         case .Text(let text, let rotation, let scale):
             try container.encodeValues(text, rotation.degrees, scale, for: .text)
         case .Placeholder:
@@ -112,6 +121,7 @@ extension AUIcon: Codable {
         case .image:
             let (name, rotationDegrees, scale): (String, Double, CGFloat) = try container.decodeValues(for: .image)
             self = .Image(name: name, rotation: .init(degrees: rotationDegrees), scale: scale)
+        #if canImport(UIKit)
         case .loadedImage:
             let (imgData, rotationDegrees, scale): (Data?, Double, CGFloat) =
             try container.decodeValues(for: .loadedImage)
@@ -131,6 +141,7 @@ extension AUIcon: Codable {
             }
             
             self = .LoadedImage(image: img, rotation: .init(degrees: rotationDegrees), scale: scale)
+        #endif
         case .text:
             let (text, rotationDegrees, scale): (String, Double, CGFloat) = try container.decodeValues(for: .text)
             self = .Text(text: text, rotation: .init(degrees: rotationDegrees), scale: scale)

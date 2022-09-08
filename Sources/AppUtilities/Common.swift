@@ -85,6 +85,8 @@ public extension Calendar {
 
 // MARK: VisualEffectView
 
+#if canImport(UIKit)
+
 /// Allows using UIVisualEffect in SwiftUI.
 public struct VisualEffectView: UIViewRepresentable {
     var effect: UIVisualEffect?
@@ -107,6 +109,8 @@ public extension View {
     }
 }
 
+#endif
+
 // MARK: View extensions
 
 public extension View {
@@ -125,6 +129,8 @@ public extension View {
 
 // MARK: Share sheet
 
+#if canImport(UIKit)
+
 public func displayShareSheet(itemsToShare: [Any], sourceRect: CGRect? = nil) {
     guard let rootController = UIApplication.shared.windows.first?.rootViewController else {
         return
@@ -139,6 +145,8 @@ public func displayShareSheet(itemsToShare: [Any], sourceRect: CGRect? = nil) {
     
     rootController.present(activityViewController, animated: true, completion: nil)
 }
+
+#endif
 
 // MARK: Coding
 

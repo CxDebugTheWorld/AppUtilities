@@ -1,6 +1,126 @@
 
-import UIKit
 import SwiftUI
+
+#if canImport(UIKit)
+import UIKit
+#endif
+
+public extension CGBitmapInfo {
+    enum ComponentLayout {
+        case bgra
+        case abgr
+        case argb
+        case rgba
+        case bgr
+        case rgb
+        
+        var count: Int {
+            switch self {
+            case .bgr, .rgb: return 3
+            default: return 4
+            }
+        }
+        
+    }
+    
+    var componentLayout: ComponentLayout? {
+        guard let alphaInfo = CGImageAlphaInfo(rawValue: rawValue & Self.alphaInfoMask.rawValue) else { return nil }
+        let isLittleEndian = contains(.byteOrder32Little)
+        
+        if alphaInfo == .none {
+            return isLittleEndian ? .bgr : .rgb
+        }
+        
+        let alphaIsFirst = alphaInfo == .premultipliedFirst || alphaInfo == .first || alphaInfo == .noneSkipFirst
+        if isLittleEndian {
+            return alphaIsFirst ? .bgra : .abgr
+        }
+        else {
+            return alphaIsFirst ? .argb : .rgba
+        }
+    }
+    
+    var chromaIsPremultipliedByAlpha: Bool {
+        let alphaInfo = CGImageAlphaInfo(rawValue: rawValue & Self.alphaInfoMask.rawValue)
+        return alphaInfo == .premultipliedFirst || alphaInfo == .premultipliedLast
+    }
+}
+
+public extension CVPixelBuffer {
+    /// Deep copy a CVPixelBuffer:
+    /// http://stackoverflow.com/questions/38335365/pulling-data-from-a-cmsamplebuffer-in-order-to-create-a-deep-copy
+    func copy() -> CVPixelBuffer {
+        precondition(CFGetTypeID(self) == CVPixelBufferGetTypeID(), "copy() cannot be called on a non-CVPixelBuffer")
+        
+        var _copy: CVPixelBuffer?
+        CVPixelBufferCreate(
+            nil,
+            CVPixelBufferGetWidth(self),
+            CVPixelBufferGetHeight(self),
+            CVPixelBufferGetPixelFormatType(self),
+            CVBufferGetAttachments(self, .shouldPropagate),
+            &_copy)
+        
+        guard let copy = _copy else { fatalError() }
+        
+        CVPixelBufferLockBaseAddress(self, .readOnly)
+        CVPixelBufferLockBaseAddress(copy, [])
+        
+        defer {
+            CVPixelBufferUnlockBaseAddress(copy, [])
+            CVPixelBufferUnlockBaseAddress(self, .readOnly)
+        }
+        
+        for plane in 0..<CVPixelBufferGetPlaneCount(self) {
+            let dest = CVPixelBufferGetBaseAddressOfPlane(copy, plane)
+            let source = CVPixelBufferGetBaseAddressOfPlane(self, plane)
+            let height = CVPixelBufferGetHeightOfPlane(self, plane)
+            let bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(self, plane)
+            
+            memcpy(dest, source, height * bytesPerRow)
+        }
+        
+        return copy
+    }
+    
+    /// Copy the contents of this buffer into another one.
+    func copy(into copy: CVPixelBuffer) {
+        CVPixelBufferLockBaseAddress(self, .readOnly)
+        CVPixelBufferLockBaseAddress(copy, [])
+        
+        defer {
+            CVPixelBufferUnlockBaseAddress(copy, [])
+            CVPixelBufferUnlockBaseAddress(self, .readOnly)
+        }
+        
+        for plane in 0..<CVPixelBufferGetPlaneCount(self) {
+            let dest = CVPixelBufferGetBaseAddressOfPlane(copy, plane)
+            let source = CVPixelBufferGetBaseAddressOfPlane(self, plane)
+            let height = CVPixelBufferGetHeightOfPlane(self, plane)
+            let bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(self, plane)
+            
+            memcpy(dest, source, height * bytesPerRow)
+        }
+    }
+}
+
+#if canImport(UIKit)
+
+public extension View {
+    func snapshot() -> UIImage {
+        let controller = UIHostingController(rootView: self)
+        let view = controller.view
+        
+        let targetSize = controller.view.intrinsicContentSize
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
+        view?.backgroundColor = .clear
+        
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        return renderer.image { _ in
+            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+    }
+}
 
 public extension UIImage {
     convenience init?(pixelBuffer: CVPixelBuffer) {
@@ -232,47 +352,6 @@ public extension UIImage {
     
 }
 
-public extension CGBitmapInfo {
-    enum ComponentLayout {
-        case bgra
-        case abgr
-        case argb
-        case rgba
-        case bgr
-        case rgb
-        
-        var count: Int {
-            switch self {
-            case .bgr, .rgb: return 3
-            default: return 4
-            }
-        }
-        
-    }
-    
-    var componentLayout: ComponentLayout? {
-        guard let alphaInfo = CGImageAlphaInfo(rawValue: rawValue & Self.alphaInfoMask.rawValue) else { return nil }
-        let isLittleEndian = contains(.byteOrder32Little)
-        
-        if alphaInfo == .none {
-            return isLittleEndian ? .bgr : .rgb
-        }
-        
-        let alphaIsFirst = alphaInfo == .premultipliedFirst || alphaInfo == .first || alphaInfo == .noneSkipFirst
-        if isLittleEndian {
-            return alphaIsFirst ? .bgra : .abgr
-        }
-        else {
-            return alphaIsFirst ? .argb : .rgba
-        }
-    }
-    
-    var chromaIsPremultipliedByAlpha: Bool {
-        let alphaInfo = CGImageAlphaInfo(rawValue: rawValue & Self.alphaInfoMask.rawValue)
-        return alphaInfo == .premultipliedFirst || alphaInfo == .premultipliedLast
-    }
-}
-
 public extension UIView {
     func asImage(rect: CGRect) -> UIImage {
         let renderer = UIGraphicsImageRenderer(bounds: rect)
@@ -329,76 +408,4 @@ public extension UIImage {
     }
 }
 
-public extension CVPixelBuffer {
-    /// Deep copy a CVPixelBuffer:
-    /// http://stackoverflow.com/questions/38335365/pulling-data-from-a-cmsamplebuffer-in-order-to-create-a-deep-copy
-    func copy() -> CVPixelBuffer {
-        precondition(CFGetTypeID(self) == CVPixelBufferGetTypeID(), "copy() cannot be called on a non-CVPixelBuffer")
-        
-        var _copy: CVPixelBuffer?
-        CVPixelBufferCreate(
-            nil,
-            CVPixelBufferGetWidth(self),
-            CVPixelBufferGetHeight(self),
-            CVPixelBufferGetPixelFormatType(self),
-            CVBufferGetAttachments(self, .shouldPropagate),
-            &_copy)
-        
-        guard let copy = _copy else { fatalError() }
-        
-        CVPixelBufferLockBaseAddress(self, .readOnly)
-        CVPixelBufferLockBaseAddress(copy, [])
-        
-        defer {
-            CVPixelBufferUnlockBaseAddress(copy, [])
-            CVPixelBufferUnlockBaseAddress(self, .readOnly)
-        }
-        
-        for plane in 0..<CVPixelBufferGetPlaneCount(self) {
-            let dest = CVPixelBufferGetBaseAddressOfPlane(copy, plane)
-            let source = CVPixelBufferGetBaseAddressOfPlane(self, plane)
-            let height = CVPixelBufferGetHeightOfPlane(self, plane)
-            let bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(self, plane)
-            
-            memcpy(dest, source, height * bytesPerRow)
-        }
-        
-        return copy
-    }
-    
-    /// Copy the contents of this buffer into another one.
-    func copy(into copy: CVPixelBuffer) {
-        CVPixelBufferLockBaseAddress(self, .readOnly)
-        CVPixelBufferLockBaseAddress(copy, [])
-        
-        defer {
-            CVPixelBufferUnlockBaseAddress(copy, [])
-            CVPixelBufferUnlockBaseAddress(self, .readOnly)
-        }
-        
-        for plane in 0..<CVPixelBufferGetPlaneCount(self) {
-            let dest = CVPixelBufferGetBaseAddressOfPlane(copy, plane)
-            let source = CVPixelBufferGetBaseAddressOfPlane(self, plane)
-            let height = CVPixelBufferGetHeightOfPlane(self, plane)
-            let bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(self, plane)
-            
-            memcpy(dest, source, height * bytesPerRow)
-        }
-    }
-}
-
-public extension View {
-    func snapshot() -> UIImage {
-        let controller = UIHostingController(rootView: self)
-        let view = controller.view
-        
-        let targetSize = controller.view.intrinsicContentSize
-        view?.bounds = CGRect(origin: .zero, size: targetSize)
-        view?.backgroundColor = .clear
-        
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-        return renderer.image { _ in
-            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
-    }
-}
+#endif
