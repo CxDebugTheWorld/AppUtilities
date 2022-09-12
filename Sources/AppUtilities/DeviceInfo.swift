@@ -64,6 +64,8 @@ public enum ScreenType: String, RawRepresentable, CaseIterable {
     case iPhone12mini = "iPhone 12 mini"
     case iPhone12 = "iPhone 12"
     case iPhone12ProMax = "iPhone 12 Pro Max"
+    case iPhone14Pro = "iPhone 14 Pro"
+    case iPhone14ProMax = "iPhone 14 Pro Max"
     case other = "Other"
     
     /// Whether or not this screen type is an iPhone 5 or smaller.
@@ -333,6 +335,10 @@ public extension DeviceModel {
         case .iPhone13Pro:
             fallthrough
         case .iPhone13ProMax:
+            fallthrough
+        case .iPhone14Pro:
+            fallthrough
+        case .iPhone14ProMax:
             return true
         default:
             return false
@@ -439,17 +445,17 @@ public extension DeviceModel {
         case .iPhone13Pro:
             fallthrough
         case .iPhone14:
-            fallthrough
-        case .iPhone14Pro:
             return .iPhone12
+        case .iPhone14Pro:
+            return .iPhone14Pro
         case .iPhone12ProMax:
             fallthrough
         case .iPhone13ProMax:
             fallthrough
         case .iPhone14Plus:
-            fallthrough
-        case .iPhone14ProMax:
             return .iPhone12ProMax
+        case .iPhone14ProMax:
+            return .iPhone14ProMax
         case .simulator:
             fallthrough
         case .other:
@@ -511,6 +517,10 @@ public extension ScreenType {
             return (width: 390, height: 844)
         case .iPhone12ProMax:
             return (width: 428, height: 926)
+        case .iPhone14Pro:
+            return (width: 393, height: 852)
+        case .iPhone14ProMax:
+            return (width: 430, height: 932)
         case .other:
             return nil
         }
@@ -541,6 +551,10 @@ public extension ScreenType {
             return 3
         case .iPhone12ProMax:
             return 3
+        case .iPhone14Pro:
+            return 3
+        case .iPhone14ProMax:
+            return 3
         case .other:
             return nil
         }
@@ -561,6 +575,10 @@ public extension ScreenType {
             return EdgeInsets(top: 47, leading: 0, bottom: 34, trailing: 0)
         case .iPhone12ProMax:
             return EdgeInsets(top: 47, leading: 0, bottom: 34, trailing: 0)
+        case .iPhone14Pro:
+            return EdgeInsets(top: 59, leading: 0, bottom: 34, trailing: 0)
+        case .iPhone14ProMax:
+            return EdgeInsets(top: 59, leading: 0, bottom: 34, trailing: 0)
         default:
             return EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         }
