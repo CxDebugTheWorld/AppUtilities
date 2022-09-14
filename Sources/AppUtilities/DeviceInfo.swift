@@ -486,6 +486,10 @@ public extension ScreenType {
             return 47.33
         case .iPhone12ProMax:
             return 53.33
+        case .iPhone14Pro:
+            return 55
+        case .iPhone14ProMax:
+            return 55
         default:
             return 0
         }
@@ -605,4 +609,24 @@ public func scaleByScreenWidth(_ value: Double) -> Double {
     return Double(UIScreen.main.bounds.width / baselineWidth) * value
 }
 
+#if DEBUG
+
+extension UIScreen {
+    private static let cornerRadiusKey: String = {
+        let components = ["Radius", "Corner", "display", "_"]
+        return components.reversed().joined()
+    }()
+    
+    /// The corner radius of the display. Uses a private property of `UIScreen`,
+    /// and may report 0 if the API changes.
+    public var displayCornerRadiusComputed: CGFloat {
+        guard let cornerRadius = self.value(forKey: Self.cornerRadiusKey) as? CGFloat else {
+            return 0
+        }
+        
+        return cornerRadius
+    }
+}
+
+#endif
 #endif
